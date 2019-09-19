@@ -12,12 +12,12 @@ router.get('/', function(req, res, next) {
 
     db.run("INSERT INTO users (email, password) VALUES (?, ?)",
         "user@example.com",
-        "superlonghashedpasswordthatwewillseehowtohashinthenextsection", (err) => {
+        "superlonghashedpasswordthatwewillseehowtohashinthenextsection", (res, err) => {
         if (err) {
             console.log(err)
         }
 
-        return "User added";
+        return;
         console.log("User added")
     });
 

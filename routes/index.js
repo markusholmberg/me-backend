@@ -5,23 +5,12 @@ const db = new sqlite3.Database('./db/texts.sqlite');
 
 router.get('/', function(req, res, next) {
     const data = {
-        data: {
-            msg: "Idag är det onsdag mina dudes"
-        }
+        name: "Markus Holmberg",
+        placeofbirth: "Singapore",
+        about: "I'm 21 years old. Studying my third year of Webprogramming at Blekinge Institute of Technology"
     };
-
-    db.run("INSERT INTO users (email, password) VALUES (?, ?)",
-        "user@example.com",
-        "superlonghashedpasswordthatwewillseehowtohashinthenextsection", (res, err) => {
-        if (err) {
-            console.log(err)
-        }
-
-        return;
-        console.log("User added")
-    });
-
     res.json(data);
+
 });
 
 module.exports = router;

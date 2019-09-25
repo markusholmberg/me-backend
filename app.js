@@ -3,19 +3,23 @@ const app = express();
 const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 var router = express.Router();
-const saltRounds = 10;
-const myPlaintextPassword = 'longandhardP4$$w0rD';
-const hash = 'superlonghashedpasswordfetchedfromthedatabase';
+// const saltRounds = 10;
+// const myPlaintextPassword = 'longandhardP4$$w0rD';
+// const hash = 'superlonghashedpasswordfetchedfromthedatabase';
 
 const index = require('./routes/index');
 const hello = require('./routes/hello');
+const reports = require('./routes/reports');
+const register = require('./routes/register');
+const login = require('./routes/login');
 
 const port = 8333;
-
-const payload = { email: "user@example.com" };
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json()); // for parsing application/json
+// const payload = { email: "user@example.com" };
 // const secret = process.env.JWT_SECRET;
 
 // const token = jwt.sign(payload, secret, { expiresIn: '1h'});
@@ -29,14 +33,14 @@ const payload = { email: "user@example.com" };
 // });
 
 app.use(cors());
-
-bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
-    // spara lösenord i databasen.
-});
-
-bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
-    // res innehåller nu true eller false beroende på om det är rätt lösenord.
-});
+//
+// bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+//     // spara lösenord i databasen.
+// });
+//
+// bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
+//     // res innehåller nu true eller false beroende på om det är rätt lösenord.
+// });
 
 // don't show the log when it is test
 if (process.env.NODE_ENV !== 'test') {
@@ -44,8 +48,13 @@ if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined')); // 'combined' outputs the Apache style LOGs
 }
 
+
+
 app.use('/', index);
 app.use('/hello', hello);
+app.use("/reports", reports);
+app.use("/register", register);
+app.use("/login", login);
 
 app.use((req, res, next) => {
     console.log(req.method);
@@ -75,22 +84,22 @@ app.use((err, req, res, next) => {
     });
 });
 
-router.post("/reports",
-    (req, res, next) => checkToken(req, res, next),
-    (req, res) => reports.addReport(res, req.body));
-
-function checkToken(req, res, next) {
-    const token = req.headers['x-access-token'];
-
-    jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
-        if (err) {
-            // send error response
-        }
-
-        // Valid token send on the request
-        next();
-    });
-}
+// router.post("/reports",
+//     (req, res, next) => checkToken(req, res, next),
+//     (req, res) => reports.addReport(res, req.body));
+//
+// function checkToken(req, res, next) {
+//     const token = req.headers['x-access-token'];
+//
+//     jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+//         if (err) {
+//             // send error response
+//         }
+//
+//         // Valid token send on the request
+//         next();
+//     });
+// }
 
 // Add a route
 
@@ -105,8 +114,7 @@ app.get("/hello/:msg", (req, res) => {
     res.json(data);
 });
 
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true }));
+
 
 // Start up server
 app.listen(port, () => console.log(`Example API listening on port ${port}!`));

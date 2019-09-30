@@ -22,6 +22,7 @@ router.post('/', (req, res, next) => {
                 return token;
             } else {
                 return false;
+                console.log("Wrong password or email")
             }
         });
         if (error) {

@@ -28,6 +28,7 @@ router.post("/week/:id", function(req, res, next) {
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
             res.status(401).send({"error": "You are not authorized!"})
+            return;
         }
         db.run(`INSERT INTO reports (week, report) VALUES (?, ?);`, [week, data], (error, rows) => {
             if (error) {
@@ -53,6 +54,7 @@ router.post("/week/:id/update", function(req, res, next) {
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
             res.send(401).send({"error": "You are not authorized!"})
+            return;
         }
         db.run(`UPDATE reports SET report = ? WHERE week = ?;`, [data, week], (error, rows) => {
             if (error) {

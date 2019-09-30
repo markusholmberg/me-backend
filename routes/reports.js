@@ -9,7 +9,7 @@ require("dotenv").config();
 router.get('/week/:id', function(req, res, next) {
     db.all(`SELECT * FROM reports WHERE week = ?;`, req.params.id, (error, rows) => {
         if (error) {
-            res.status(400).json({"error": error.message});
+            res.status(400).send({"error": error.message});
             return;
         }
         res.json({
@@ -52,7 +52,7 @@ router.post("/week/:id/update", function(req, res, next) {
 
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
-            res.send(401).json({"error": "You are not authorized!"})
+            res.send(401).send({"error": "You are not authorized!"})
         }
         db.run(`UPDATE reports SET report = ? WHERE week = ?;`, [data, week], (error, rows) => {
             if (error) {

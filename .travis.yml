@@ -19,4 +19,4 @@ after_success:
     - npm run report-codecov
 
 env:
-    - SECRET = "travissecret" 
+    - JWT_SECRET = "travissecret" 

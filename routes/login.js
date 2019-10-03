@@ -8,7 +8,7 @@ require("dotenv").config();
 
 router.post('/', (req, res, next) => {
     var email = req.body.email;
-    const secret = process.env.SECRET;
+    const secret = process.env.JWT_SECRET;
     const payload = { email: req.body.email };
 
     console.log(req.body);

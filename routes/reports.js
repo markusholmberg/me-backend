@@ -24,7 +24,7 @@ router.post("/week/:id", function(req, res, next) {
     const data = req.body.report;
     const token = req.body.token;
 
-    jwt.verify(token, process.env.SECRET, function(err, decoded) {
+    jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
         if (err) {
             res.status(401).send({"error": "You are not authorized!"});
             return;
@@ -49,7 +49,7 @@ router.post("/week/:id/update", function(req, res, next) {
     const data = req.body.report;
     const token = req.body.token;
 
-    jwt.verify(token, process.env.SECRET, function(err, decoded) {
+    jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
         if (err) {
             res.send(401).send({"error": "You are not authorized!"});
             return;

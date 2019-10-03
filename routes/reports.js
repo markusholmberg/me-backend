@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db/texts.sqlite');
+const db = require("../db/database.js");
 const jwt = require('jsonwebtoken');
-require("dotenv").config();
 
+require("dotenv").config();
 
 router.get('/week/:id', function(req, res, next) {
     db.all(`SELECT * FROM reports WHERE week = ?;`, req.params.id, (error, rows) => {
@@ -13,8 +12,8 @@ router.get('/week/:id', function(req, res, next) {
             return;
         }
         res.json({
-            "data":rows
-        })
+            "data": rows
+        });
     });
 });
 
@@ -27,24 +26,23 @@ router.post("/week/:id", function(req, res, next) {
 
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
-            res.status(401).send({"error": "You are not authorized!"})
+            res.status(401).send({"error": "You are not authorized!"});
             return;
+        } else {
+            db.run(`INSERT INTO reports (week, report) VALUES (?, ?);`, [week, data], (error, rows) => {
+                if (error) {
+                    res.status(400).send({"error": error.message});
+                    return;
+                }
+                res.json({
+                    "message": "success",
+                    "data": rows,
+                    "token": token
+                });
+            });
         }
-        db.run(`INSERT INTO reports (week, report) VALUES (?, ?);`, [week, data], (error, rows) => {
-            if (error) {
-                res.status(500).send({"error": error.message});
-                return;
-            }
-            res.json({
-                "message": "success",
-                "data": rows,
-                "token": token
-            })
-        })
     });
-
-
-})
+});
 
 router.post("/week/:id/update", function(req, res, next) {
     const week = req.body.week;
@@ -53,7 +51,7 @@ router.post("/week/:id/update", function(req, res, next) {
 
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
-            res.send(401).send({"error": "You are not authorized!"})
+            res.send(401).send({"error": "You are not authorized!"});
             return;
         }
         db.run(`UPDATE reports SET report = ? WHERE week = ?;`, [data, week], (error, rows) => {
@@ -65,11 +63,9 @@ router.post("/week/:id/update", function(req, res, next) {
                 "message": "success",
                 "data": rows,
                 "token": req.body.token
-            })
-        })
+            });
+        });
     });
-
-
-})
+});
 
 module.exports = router;

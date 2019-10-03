@@ -18,4 +18,4 @@ after_success:
     - npm run report-coveralls
     - npm run report-codecov
 
-env: JWT_SECRET = "travissecret" 
+env: -JWT_SECRET = "travissecret" 

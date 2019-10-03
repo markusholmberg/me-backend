@@ -8,9 +8,8 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../app.js');
 
-const secret = process.env.SECRET;
 const payload = {test: "testing"};
-const token = jwt.sign(payload, secret, { expiresIn: '1h'});
+const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1h'});
 
 chai.should();
 

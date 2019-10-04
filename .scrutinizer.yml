@@ -3,7 +3,7 @@ checks:
 build:
     environment:
         variables:
-            JWT_SECRET: 'scrutnizeryes'
+            JWT_SECRET: 'scrutsecret'
     nodes:
         analysis:
             tests:

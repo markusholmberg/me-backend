@@ -11,6 +11,7 @@ const hello = require('./routes/hello');
 const reports = require('./routes/reports');
 const register = require('./routes/register');
 const login = require('./routes/login');
+const chat = require('./routes/chat');
 
 const port = 8333;
 
@@ -32,6 +33,7 @@ app.use('/hello', hello);
 app.use("/reports", reports);
 app.use("/register", register);
 app.use("/login", login);
+app.use("/chat", chat);
 
 app.use((req, res, next) => {
     console.log(req.method);

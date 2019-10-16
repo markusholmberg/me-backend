@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const mongo = require("mongodb").MongoClient;
-const dsn = "mongodb://localhost:27017/chat";
+const dsn = "mongodb://mahm.me:27017/chat";
 
 router.get("/", async function(req, res) {
     const client  = await mongo.connect(dsn, { useNewUrlParser: true, useUnifiedTopology: true });

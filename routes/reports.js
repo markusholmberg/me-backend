@@ -51,7 +51,7 @@ router.post("/week/:id/update", function(req, res, next) {
 
     jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
         if (err) {
-            res.send(401).send({"error": "You are not authorized!"});
+            res.status(401).send({"error": "You are not authorized!"});
             return;
         }
         db.run(`UPDATE reports SET report = ? WHERE week = ?;`, [data, week], (error, rows) => {
